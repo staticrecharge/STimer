@@ -1,0 +1,32 @@
+2.0.0
+- The timer will now pause upon reloading the UI
+- Fixed an issue where starting a timer while other menus are open would cause the timer to show
+- Changed the alert sound for when the timer ends
+
+1.2.1
+- The timer text greys out when pause to indicate inactive
+- The timer now hides itself when menus are open
+
+1.2.0
+- Fixed a rounding error that caused the timer to be inaccurate
+- Added the ability to pause and resume a timer
+- Add error checking to make sure a valid number is entered for a timer
+
+1.1.0
+- Changed the timer to operate using the OnUpdate event
+- If the time left is less than 1 minute the timer will switch to seconds
+- Added the ability to toggle the visibility of the background of the timer
+- Added a command list with /st and no arguments
+
+1.0.3
+- Added a check and error message for starting a new timer when one is already in progress
+- Added a sound for when the timer is done
+
+1.0.2
+- Fixed issues with the timer through loading screens
+
+1.0.1
+- Fixed issues with the timer not resetting properly
+
+1.0.0
+- Initial release

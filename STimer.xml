@@ -1,0 +1,26 @@
+<GuiXml>
+  <Controls>
+    <TopLevelControl name="ST_Panel" mouseEnabled="true" movable="true" clampedToScreen="true" hidden="true">
+      <Dimensions x="80" y ="30" />
+      <Anchor point="CENTER" relativeTo="GuiRoot" relativePoint="CENTER" offsetX="0" offsetY="-200" />
+      <OnMoveStop> ST_ON_MOVE_STOP() </OnMoveStop>
+      <OnUpdate> ST_ON_UPDATE() </OnUpdate>
+      <Controls>
+
+        <Backdrop name="$(parent)BG" inherits="ZO_DefaultBackdrop">
+          <AnchorFill />
+        </Backdrop>
+
+        <Label name="$(parent)Label" font="ZoFontGame" color="FFFFFF" verticalAlignment="CENTER" horizontalAlignment="CENTER">
+          <AnchorFill />
+        </Label>
+
+        <Button name="$(parent)Button" hidden="true">
+          <AnchorFill />
+          <OnClicked> ST_STOP() </OnClicked>
+        </Button>
+
+      </Controls>
+    </TopLevelControl>
+  </Controls>
+</GuiXml>
