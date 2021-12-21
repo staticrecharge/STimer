@@ -1,7 +1,7 @@
 --[[----------------------------------------------
 STimer
 Author: Static_Recharge
-Version: 2.0.0
+Version: 2.1.0
 Description: Allows for the creation of a custom
 timer.
 ----------------------------------------------]]--
@@ -12,7 +12,7 @@ Addon Information
 ----------------------------------------------]]--
 local ST = {
   addonName = "STimer",
-  version = "2.0.0",
+  version = "2.1.0",
   author = "Static_Recharge",
 }
 
@@ -118,7 +118,7 @@ function ST.Start(duration)
     ST_PanelLabel:SetText(duration .. "s")
   else
     local hours = math.floor(duration / 3600)
-    local minutes = math.ceil(duration / 60)
+    local minutes = math.ceil((duration - (hours * 3600)) / 60)
     ST_PanelLabel:SetText(hours .. "h : " .. minutes .. "m")
   end
   ST.next = ST.start + 1000
@@ -147,13 +147,13 @@ function ST.TimerIterator()
       ST_PanelLabel:SetText(ST.duration .. "s")
     else
       local hours = math.floor(ST.duration / 3600)
-      local minutes = math.ceil(ST.duration / 60)
+      local minutes = math.ceil((ST.duration - (hours * 3600)) / 60)
       ST_PanelLabel:SetText(hours .. "h : " .. minutes .. "m")
     end
   else
     ST_PanelLabel:SetText("|cFF3300DONE!|r")
     ST_PanelLabel:SetAlpha(1)
-    ST_PanelButton:SetHidden(false)
+    ST_PanelStopButton:SetHidden(false)
     if not ST.alerted then
       PlaySound(SOUNDS.NEW_TIMED_NOTIFICATION)
       zo_callLater(function() ST.BlinkIterator() end, 500)
@@ -180,7 +180,7 @@ function ST.Stop()
   ST.paused = false
   ST_PanelLabel:SetHidden(false)
   ST_Panel:SetHidden(true)
-  ST_PanelButton:SetHidden(true)
+  ST_PanelStopButton:SetHidden(true)
 end
 
 function ST.Pause()
@@ -190,16 +190,22 @@ function ST.Pause()
     ST.start = os.rawclock() - ST.next
     ST.paused = true
     ST_PanelLabel:SetAlpha(0.4)
+    ST.SendToChat("Paused.")
   elseif ST.duration and ST.paused then
     ST.next = os.rawclock() + 1000 - ST.start
     ST.inProgress = true
     ST.paused = false
     ST_PanelLabel:SetAlpha(1)
+    ST.SendToChat("Resumed.")
   end
 end
 
 function ST_STOP()
   ST.Stop()
+end
+
+function ST_PAUSE()
+  ST.Pause()
 end
 
 function ST_ON_UPDATE()
@@ -244,6 +250,9 @@ function ST.OnAddonLoaded(eventCode, addonName)
     ST.SavedVars = ZO_SavedVars:NewAccountWide("STimer", 1, nil, ST.Defaults, nil)
 
     ST.RestorePanel()
+    local control = ST_PanelPauseButton
+    control:SetHandler("onMouseEnter", function(self) ZO_Tooltips_ShowTextTooltip(self, TOP, "Pause/Resume") end)
+    control:SetHandler("OnMouseExit", function(self) ZO_Tooltips_HideTextTooltip() end)
 
     local scene = SM:GetScene("hud")
     scene:RegisterCallback("StateChange", ST.HUDSceneChange)
@@ -266,7 +275,7 @@ function ST.OnPlayerActiviated(eventCode, initial)
       ST_PanelLabel:SetText(ST.duration .. "s")
     else
       local hours = math.floor(ST.duration / 3600)
-      local minutes = math.ceil(ST.duration / 60)
+      local minutes = math.ceil((ST.duration - (hours * 3600)) / 60)
       ST_PanelLabel:SetText(hours .. "h : " .. minutes .. "m")
     end
     if ST.paused then
