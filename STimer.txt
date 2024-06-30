@@ -1,8 +1,13 @@
-## Title: STimer 2.1.0
+## Title: STimer 3.0.0
 ## Author: |cFF0000Static_Recharge|r
-## Version: 2.1.0
-## APIVersion: 101032
+## Version: 3.0.0
+## AddOnVersion: 3
+## APIVersion: 101041
+## DependsOn: LibAddonMenu-2.0 LibTimer
 ## SavedVariables: STimer
+## DisableSavedVariablesAutoSaving: 1
+## Description: Creates a custom on-screen count down timer.
+## IsLibrary: false
 
 
 ## This Add-on is not created by, affiliated with or sponsored by ZeniMax Media Inc. or its affiliates. 

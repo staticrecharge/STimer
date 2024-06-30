@@ -1,3 +1,7 @@
+2.1.1
+- Updated for the Ascending Tide DLC and Upate 33
+- Fixed an issue with the background not rembering it's hidden state
+
 2.1.0
 - Fixed an issue with timer values of greater than 60 minutes
 - Updated for the Deadlands DLC

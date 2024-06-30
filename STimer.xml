@@ -4,8 +4,7 @@
     <TopLevelControl name="ST_Panel" mouseEnabled="true" movable="true" clampedToScreen="true" hidden="true">
       <Dimensions x="110" y ="30" />
       <Anchor point="CENTER" relativeTo="GuiRoot" relativePoint="CENTER" offsetX="0" offsetY="-200" />
-      <OnMoveStop> ST_ON_MOVE_STOP() </OnMoveStop>
-      <OnUpdate> ST_ON_UPDATE() </OnUpdate>
+      <OnMoveStop> STimer:OnMoveStop() </OnMoveStop>
       <Controls>
 
         <Backdrop name="$(parent)BG" inherits="ZO_DefaultBackdrop">
@@ -23,12 +22,12 @@
           <Textures normal = "esoui\art\buttons\rightarrow_up.dds"
                     mouseOver = "esoui\art\buttons\rightarrow_over.dds"
                     pressedMouseOver = "esoui\art\buttons\rightarrow_down.dds" />
-          <OnClicked> ST_PAUSE() </OnClicked>
+          <OnClicked> STimer:Pause() </OnClicked>
         </Button>
 
         <Button name="$(parent)StopButton" clickSound="Click" hidden="true">
           <AnchorFill />
-          <OnClicked> ST_STOP() </OnClicked>
+          <OnClicked> STimer:Stop() </OnClicked>
         </Button>
 
       </Controls>
