@@ -1,3 +1,7 @@
+3.0.0
+  - Updated for Gold Road Chapter and upate 42
+  - Restructured to use LibTimer
+
 2.1.1
 - Updated for the Ascending Tide DLC and Upate 33
 - Fixed an issue with the background not rembering it's hidden state
