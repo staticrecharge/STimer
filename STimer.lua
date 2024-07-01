@@ -12,7 +12,7 @@ Aliases
 local EM = EVENT_MANAGER
 local CS = CHAT_SYSTEM
 local SM = SCENE_MANAGER
-LT_GLOBAL = LibTimer
+local LT = LibTimer
 
 
 --[[------------------------------------------------------------------------------------------------
@@ -139,12 +139,12 @@ end
 
 
 function ST:UpdateTimer(name, value)
-
+  self:SendToChat(name, value)
 end
 
 
 function ST:AlarmTimer(name)
-
+  self:SendToChat(name)
 end
 
 
@@ -156,7 +156,7 @@ function ST:Start(duration)
     name = "STimer-CD",
     timerType = LT_COUNT_DOWN,
     interval = LT_INTERVAL_S,
-    start = duration,
+    start = duration * 60,
     autoPause = false,
     autoResume = false,
     updateCallback = function(name, value) self:UpdateTimer(name, value) end,
