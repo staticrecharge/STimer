@@ -12,7 +12,7 @@ Aliases
 local EM = EVENT_MANAGER
 local CS = CHAT_SYSTEM
 local SM = SCENE_MANAGER
-local LT = LibTimer
+local LT
 
 
 --[[------------------------------------------------------------------------------------------------
@@ -54,11 +54,13 @@ function ST:Initialize()
   scene:RegisterCallback("StateChange", function() self:HUDSceneChange() end)
   local scene = SM:GetScene("hudui")
   scene:RegisterCallback("StateChange", function() self:HUDUISceneChange() end)
+
+  LT = LibTimer
 end
 
 
 --[[------------------------------------------------------------------------------------------------
-function LT:SendToChat(inputString, ...)
+function ST:SendToChat(inputString, ...)
 Inputs:				inputString							- (string/number/bool) The input string to be formatted and sent to chat.
 							...											- (string/number/bool) More inputs to be placed on new lines within the same message.
 Outputs:			None
@@ -85,6 +87,18 @@ function ST:SendToChat(inputString, ...)
 		end
 	end
 	CS:AddMessage(table.concat(Output))
+end
+
+
+--[[------------------------------------------------------------------------------------------------
+function ST:Debug()
+Inputs:				None							
+																		
+Outputs:			Debugging information
+Description:	For testing purposes only
+------------------------------------------------------------------------------------------------]]--
+function ST:Debug()
+  d(LT)
 end
 
 
@@ -139,12 +153,13 @@ end
 
 
 function ST:UpdateTimer(name, value)
-  self:SendToChat(name, value)
+  self:SendToChat(name .. ": " .. value)
 end
 
 
 function ST:AlarmTimer(name)
-  self:SendToChat(name)
+  self:SendToChat(name .. " stopped.")
+  self:Stop()
 end
 
 
@@ -162,13 +177,10 @@ function ST:Start(duration)
     updateCallback = function(name, value) self:UpdateTimer(name, value) end,
     finishedCallback = function(name) self:AlarmTimer(name) end,
   }
-  d(self.timerData)
-  if not LibTimer:IsRegistered(self.timerData.name) then
-    LibTimer:RegisterTimer(self.timerData)
+  if not LT:IsRegistered(self.timerData.name) then
+    LT:RegisterTimer(self.timerData)
   end
-  self.timerData.start = duration
-  LibTimer:SetStart(self.timerData.name, self.timerData.start)
-  LibTimer:Start(self.timerData.name)
+  LT:Start(self.timerData.name)
 end
 
 
@@ -213,6 +225,8 @@ function ST:CommandParse(args)
     self:HideBG()
   elseif Options[1] == "pause" then
     self:Pause()
+  elseif Options[1] == "debug" then
+    self:Debug()
   else
     self:SendToChat("Invalid command")
   end
