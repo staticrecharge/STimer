@@ -1,34 +1,18 @@
 <GuiXml>
   <Controls>
 
-    <TopLevelControl name="ST_Panel" mouseEnabled="true" movable="true" clampedToScreen="true" hidden="true">
-      <Dimensions x="110" y ="30" />
-      <Anchor point="CENTER" relativeTo="GuiRoot" relativePoint="CENTER" offsetX="0" offsetY="-200" />
-      <OnMoveStop> STimer:OnMoveStop() </OnMoveStop>
+    <TopLevelControl name="ST_Panel" mouseEnabled="true" movable="true" clampedToScreen="true" hidden="false">
+      <Anchor point="CENTER" relativeTo="GuiRoot" relativePoint="CENTER" offsetX="0" offsetY="0" />
+      <Dimensions x="70" y="32" />
       <Controls>
 
         <Backdrop name="$(parent)BG" inherits="ZO_DefaultBackdrop">
           <AnchorFill />
         </Backdrop>
 
-        <Label name="$(parent)Label" font="ZoFontGame" color="FFFFFF" verticalAlignment="CENTER" horizontalAlignment="CENTER">
-          <Dimensions x="80" y ="30" />
-          <Anchor point="LEFT" relativeTo="$(parent)" relativePoint="LEFT" offsetX="0" offsetY="0" />
-        </Label>
-
-        <Button name="$(parent)PauseButton" clickSound="Click" hidden="false">
-          <Dimensions x="24" y ="24" />
-          <Anchor point="RIGHT" relativeTo="$(parent)" relativePoint="RIGHT" offsetX="-3" offsetY="0" />
-          <Textures normal = "esoui\art\buttons\rightarrow_up.dds"
-                    mouseOver = "esoui\art\buttons\rightarrow_over.dds"
-                    pressedMouseOver = "esoui\art\buttons\rightarrow_down.dds" />
-          <OnClicked> STimer:Pause() </OnClicked>
-        </Button>
-
-        <Button name="$(parent)StopButton" clickSound="Click" hidden="true">
+        <Label name="$(parent)Label" font="ZoFontGameBold" text="00:00:00" color="FFFFFF" verticalAlignment="CENTER" horizontalAlignment="CENTER">
           <AnchorFill />
-          <OnClicked> STimer:Stop() </OnClicked>
-        </Button>
+        </Label>
 
       </Controls>
     </TopLevelControl>

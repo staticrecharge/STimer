@@ -12,7 +12,8 @@ Aliases
 local EM = EVENT_MANAGER
 local CS = CHAT_SYSTEM
 local SM = SCENE_MANAGER
-local LT
+local LT = LibTimer
+local WM = WINDOW_MANAGER
 
 
 --[[------------------------------------------------------------------------------------------------
@@ -32,7 +33,7 @@ function ST:Initialize()
   self.addonName = "STimer"
   self.version = "3.0.0"
   self.author = "Static_Recharge"
-  self.chatPrefix = "|cFF3300[STimer]: "
+  self.chatPrefix = "|c9966FF[STimer]: |cFFFFFF"
   self.chatSuffix = "|r"
   self.alerted = false
   self.secondMode = false
@@ -41,21 +42,24 @@ function ST:Initialize()
   self.paused = false
   self.Defaults = {bgHidden = false, left = 0, top = 0}
 
-  self.SavedVars = ZO_SavedVars:NewAccountWide("STimer", 1, nil, self.Defaults, nil)
+  self.SavedVars = ZO_SavedVars:NewAccountWide("STimerSV", 1, nil, self.Defaults, nil)
 
   SLASH_COMMANDS["/st"] = function(...) self:CommandParse(...) end
 
+  --[[self.PauseButton = WM:GetControlByName("ST_PanelPauseButton")
+  self.PauseButton:SetHandler("onMouseEnter", function(self) ZO_Tooltips_ShowTextTooltip(self, TOP, "Pause/Resume") end)
+  self.PauseButton:SetHandler("OnMouseExit", function(self) ZO_Tooltips_HideTextTooltip() end)]]--
+  self.Panel = WM:GetControlByName("ST_Panel")
+  self.Panel:SetHandler("OnMoveStop", function() self:OnMoveStop() end)
+  self.Label = WM:GetControlByName("ST_PanelLabel")
+  self.BG = WM:GetControlByName("ST_PanelBG")
+
   self:RestorePanel()
-  local control = ST_PanelPauseButton
-  control:SetHandler("onMouseEnter", function(self) ZO_Tooltips_ShowTextTooltip(self, TOP, "Pause/Resume") end)
-  control:SetHandler("OnMouseExit", function(self) ZO_Tooltips_HideTextTooltip() end)
 
   local scene = SM:GetScene("hud")
   scene:RegisterCallback("StateChange", function() self:HUDSceneChange() end)
   local scene = SM:GetScene("hudui")
   scene:RegisterCallback("StateChange", function() self:HUDUISceneChange() end)
-
-  LT = LibTimer
 end
 
 
@@ -103,63 +107,65 @@ end
 
 
 function ST:OnMoveStop()
-  self.SavedVars.left = ST_Panel:GetLeft()
-  self.SavedVars.top = ST_Panel:GetTop()
+  self.SavedVars.left = self.Panel:GetLeft()
+  self.SavedVars.top = self.Panel:GetTop()
 end
 
 
 function ST:RestorePanel()
 	local left = self.SavedVars.left
 	local top = self.SavedVars.top
+  local width, height = self.Label:GetTextDimensions()
   local bgHidden = self.SavedVars.bgHidden
-
+  self.Panel:SetDimensions(width + 18, height + 6)
 	if left ~= nil and top ~= nil then
-		ST_Panel:ClearAnchors()
-		ST_Panel:SetAnchor(TOPLEFT, GuiRoot, TOPLEFT, left, top)
+		self.Panel:ClearAnchors()
+		self.Panel:SetAnchor(TOPLEFT, GuiRoot, TOPLEFT, left, top)
 	end
-
-  ST_PanelBG:SetHidden(bgHidden)
+  self.BG:SetHidden(bgHidden)
 end
 
 
 function ST:HideBG()
-  ST_PanelBG:SetHidden(not ST_PanelBG:IsHidden())
-  self.SavedVars.bgHidden = ST_PanelBG:IsHidden()
+  self.BG:SetHidden(not self.BG:IsHidden())
+  self.SavedVars.bgHidden = self.BG:IsHidden()
 end
 
 
 function ST:HUDSceneChange(oldState, newState)
   if (newState == SCENE_SHOWN) and (self.inProgress or self.paused) then
-    ST_Panel:SetHidden(false)
+    self.Panel:SetHidden(false)
   elseif (newState == SCENE_HIDDEN) then
-    ST_Panel:SetHidden(true)
+    self.Panel:SetHidden(true)
   end
 end
 
 
 function ST:HUDUISceneChange(oldState, newState)
   if (newState == SCENE_SHOWN) and (self.inProgress or self.paused) then
-    ST_Panel:SetHidden(false)
+    self.Panel:SetHidden(false)
   elseif (newState == SCENE_HIDDEN) then
-    ST_Panel:SetHidden(true)
+    self.Panel:SetHidden(true)
   end
 end
 
 
 function ST:ShowPanel()
   local sceneName = SM:GetCurrentScene():GetName()
-  if sceneName == "hud" or sceneName == "hudui" then ST_Panel:SetHidden(false) else ST_Panel:SetHidden(true) end
+  if sceneName == "hud" or sceneName == "hudui" then self.Panel:SetHidden(false) else self.Panel:SetHidden(true) end
 end
 
 
 function ST:UpdateTimer(name, value)
-  self:SendToChat(name .. ": " .. value)
+  local hours = math.floor(value/3600)
+  local minutes = math.floor(value/60)%60
+  local seconds = value%60
+  self.Label:SetText(string.format("%02i:%02i:%02i", hours, minutes, seconds))
 end
 
 
 function ST:AlarmTimer(name)
   self:SendToChat(name .. " stopped.")
-  self:Stop()
 end
 
 
@@ -172,15 +178,18 @@ function ST:Start(duration)
     timerType = LT_COUNT_DOWN,
     interval = LT_INTERVAL_S,
     start = duration * 60,
-    autoPause = false,
-    autoResume = false,
+    autoPause = true,
+    autoResume = true,
     updateCallback = function(name, value) self:UpdateTimer(name, value) end,
     finishedCallback = function(name) self:AlarmTimer(name) end,
   }
   if not LT:IsRegistered(self.timerData.name) then
     LT:RegisterTimer(self.timerData)
   end
+  self:UpdateTimer(_, self.timerData.start)
+  self:ShowPanel()
   LT:Start(self.timerData.name)
+  self.inProgress = LT:IsRunning(self.timerData.name)
 end
 
 
@@ -200,7 +209,7 @@ end
 
 function ST:BlinkIterator()
   if ST.inProgress then
-    ST_PanelLabel:SetHidden(not ST_PanelLabel:IsHidden())
+    ST.Label:SetHidden(not ST.Label:IsHidden())
     zo_callLater(function() ST:BlinkIterator() end, 500)
   end
 end
