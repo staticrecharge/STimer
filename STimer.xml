@@ -1,7 +1,7 @@
 <GuiXml>
   <Controls>
 
-    <TopLevelControl name="ST_Panel" mouseEnabled="true" movable="true" clampedToScreen="true" hidden="false">
+    <TopLevelControl name="ST_Panel" mouseEnabled="true" movable="true" clampedToScreen="true" hidden="true">
       <Anchor point="CENTER" relativeTo="GuiRoot" relativePoint="CENTER" offsetX="0" offsetY="0" />
       <Dimensions x="70" y="32" />
       <Controls>
