@@ -1,18 +1,131 @@
 <GuiXml>
   <Controls>
 
-    <TopLevelControl name="ST_Panel" mouseEnabled="true" movable="true" clampedToScreen="true" hidden="true">
+    <TopLevelControl name="ST_Panel" mouseEnabled="true" movable="true" clampedToScreen="true" hidden="true" >
       <Anchor point="CENTER" relativeTo="GuiRoot" relativePoint="CENTER" offsetX="0" offsetY="0" />
-      <Dimensions x="70" y="32" />
       <Controls>
 
         <Backdrop name="$(parent)BG" inherits="ZO_DefaultBackdrop">
-          <AnchorFill />
+          <Anchor point="TOPLEFT" relativeTo="$(parent)" relativePoint="TOPLEFT" offsetX="-9" offsetY="-3" />
+          <Anchor point="BOTTOMRIGHT" relativeTo="$(parent)" relativePoint="BOTTOMRIGHT" offsetX="9" offsetY="3" />
         </Backdrop>
 
-        <Label name="$(parent)Label" font="ZoFontGameBold" text="00:00:00" color="FFFFFF" verticalAlignment="CENTER" horizontalAlignment="CENTER">
-          <AnchorFill />
+        <Label name="$(parent)Duration" font="ZoFontGameBold" text="00:00:00" color="FFFFFF" verticalAlignment="CENTER" horizontalAlignment="CENTER">
+          <Anchor point="CENTER" relativeTo="$(parent)" relativePoint="CENTER" offsetX="0" offsetY="0" />
         </Label>
+
+        <Button name="$(parent)Menu">
+          <Anchor point="TOPLEFT" relativeTo="$(parent)" relativePoint="TOPLEFT" offsetX="-9" offsetY="-3" />
+          <Anchor point="BOTTOMRIGHT" relativeTo="$(parent)" relativePoint="BOTTOMRIGHT" offsetX="9" offsetY="3" />
+        </Button>
+
+        <Backdrop name="$(parent)EditBox" tier="HIGH" inherits="ZO_SingleLineEditBackdrop_Keyboard" hidden="true">
+          <Anchor point="TOPLEFT" relativeTo="$(parent)" relativePoint="TOPLEFT" offsetX="-8" offsetY="-2" />
+          <Anchor point="BOTTOMRIGHT" relativeTo="$(parent)" relativePoint="BOTTOMRIGHT" offsetX="8" offsetY="2" />
+          <Controls>
+
+            <EditBox name="$(parent)Text" textType="NUMERIC" inherits="ZO_DefaultEditForBackdrop ZO_EditDefaultText" maxInputCharacters="5" font="ZoFontGameBold" />
+
+          </Controls>
+        </Backdrop>
+
+        <Control name="$(parent)Buttons" hidden="true">
+          <Anchor point="TOP" relativeTo="$(parent)" relativePoint="BOTTOM" offsetX="0" offsetY="6" />
+          <Dimensions x="138" y="240" />
+          <Controls>
+
+            <Backdrop name="$(parent)BG" inherits="ZO_DefaultBackdrop">
+              <Anchor point="TOPLEFT" relativeTo="$(parent)" relativePoint="TOPLEFT" offsetX="-9" offsetY="-3" />
+              <Anchor point="BOTTOMRIGHT" relativeTo="$(parent)" relativePoint="BOTTOMRIGHT" offsetX="9" offsetY="3" />
+            </Backdrop>
+
+            <Button name="$(parent)Pause" text="P" inherits="ZO_DefaultButton">
+              <Anchor point="TOPLEFT" relativeTo="$(parent)" relativePoint="TOPLEFT" offsetX="2" offsetY="2" />
+              <Dimensions x="32" y="32" />
+            </Button>
+
+            <Button name="$(parent)Stop" text="S" inherits="ZO_DefaultButton">
+              <Anchor point="LEFT" relativeTo="$(parent)Pause" relativePoint="RIGHT" offsetX="2" offsetY="0" />
+              <Dimensions x="32" y="32" />
+            </Button>
+
+            <Button name="$(parent)Restart" text="R" inherits="ZO_DefaultButton">
+              <Anchor point="LEFT" relativeTo="$(parent)Stop" relativePoint="RIGHT" offsetX="2" offsetY="0" />
+              <Dimensions x="32" y="32" />
+            </Button>
+
+            <Button name="$(parent)Edit" text="E" inherits="ZO_DefaultButton">
+              <Anchor point="TOPLEFT" relativeTo="$(parent)Pause" relativePoint="BOTTOMLEFT" offsetX="0" offsetY="2" />
+              <Dimensions x="32" y="32" />
+            </Button>
+
+            <Button name="$(parent)Unlock" text="U" inherits="ZO_DefaultButton">
+              <Anchor point="LEFT" relativeTo="$(parent)Edit" relativePoint="RIGHT" offsetX="2" offsetY="0" />
+              <Dimensions x="32" y="32" />
+            </Button>
+
+            <Button name="$(parent)BGToggle" text="B" inherits="ZO_DefaultButton">
+              <Anchor point="LEFT" relativeTo="$(parent)Unlock" relativePoint="RIGHT" offsetX="2" offsetY="0" />
+              <Dimensions x="32" y="32" />
+            </Button>
+
+            <Button name="$(parent)Close" text="X" inherits="ZO_DefaultButton">
+              <Anchor point="LEFT" relativeTo="$(parent)Restart" relativePoint="RIGHT" offsetX="2" offsetY="0" />
+              <Dimensions x="32" y="32" />
+            </Button>
+
+            <Button name="$(parent)Preset1" text="Preset 1" inherits="ZO_DefaultButton">
+              <Anchor point="TOPLEFT" relativeTo="$(parent)Edit" relativePoint="BOTTOMLEFT" offsetX="0" offsetY="2" />
+              <Dimensions x="100" y="32" />
+            </Button>
+
+            <Button name="$(parent)Preset1Edit" text="E" inherits="ZO_DefaultButton">
+              <Anchor point="LEFT" relativeTo="$(parent)Preset1" relativePoint="RIGHT" offsetX="2" offsetY="0" />
+              <Dimensions x="32" y="32" />
+            </Button>
+
+            <Button name="$(parent)Preset2" text="Preset 2" inherits="ZO_DefaultButton">
+              <Anchor point="TOPLEFT" relativeTo="$(parent)Preset1" relativePoint="BOTTOMLEFT" offsetX="0" offsetY="2" />
+              <Dimensions x="100" y="32" />
+            </Button>
+
+            <Button name="$(parent)Preset2Edit" text="E" inherits="ZO_DefaultButton">
+              <Anchor point="LEFT" relativeTo="$(parent)Preset2" relativePoint="RIGHT" offsetX="2" offsetY="0" />
+              <Dimensions x="32" y="32" />
+            </Button>
+
+            <Button name="$(parent)Preset3" text="Preset 3" inherits="ZO_DefaultButton">
+              <Anchor point="TOPLEFT" relativeTo="$(parent)Preset2" relativePoint="BOTTOMLEFT" offsetX="0" offsetY="2" />
+              <Dimensions x="100" y="32" />
+            </Button>
+
+            <Button name="$(parent)Preset3Edit" text="E" inherits="ZO_DefaultButton">
+              <Anchor point="LEFT" relativeTo="$(parent)Preset3" relativePoint="RIGHT" offsetX="2" offsetY="0" />
+              <Dimensions x="32" y="32" />
+            </Button>
+
+            <Button name="$(parent)Preset4" text="Preset 4" inherits="ZO_DefaultButton">
+              <Anchor point="TOPLEFT" relativeTo="$(parent)Preset3" relativePoint="BOTTOMLEFT" offsetX="0" offsetY="2" />
+              <Dimensions x="100" y="32" />
+            </Button>
+
+            <Button name="$(parent)Preset4Edit" text="E" inherits="ZO_DefaultButton">
+              <Anchor point="LEFT" relativeTo="$(parent)Preset4" relativePoint="RIGHT" offsetX="2" offsetY="0" />
+              <Dimensions x="32" y="32" />
+            </Button>
+
+            <Button name="$(parent)Preset5" text="Preset 5" inherits="ZO_DefaultButton">
+              <Anchor point="TOPLEFT" relativeTo="$(parent)Preset4" relativePoint="BOTTOMLEFT" offsetX="0" offsetY="2" />
+              <Dimensions x="100" y="32" />
+            </Button>
+
+            <Button name="$(parent)Preset5Edit" text="E" inherits="ZO_DefaultButton">
+              <Anchor point="LEFT" relativeTo="$(parent)Preset5" relativePoint="RIGHT" offsetX="2" offsetY="0" />
+              <Dimensions x="32" y="32" />
+            </Button>
+
+          </Controls>
+        </Control>
 
       </Controls>
     </TopLevelControl>
